@@ -13,6 +13,7 @@ import stripe
 from foodplus.settings import STRIPE_API_KEY
 
 stripe.api_key = STRIPE_API_KEY
+
 ##############
 # CUSTOMERS
 ##############
@@ -81,9 +82,9 @@ def customer_add_order(request):
             # Step 1: Create a charge: this will charge customer's card
             charge = stripe.Charge.create(
                 amount = order_total * 100, # Amount in cents
-                currency = "usd",
+                currency = "UGX",
                 source = stripe_token,
-                description = "FoodPlus Order"
+                description = "FoodTasker Order"
             )
 
             if charge.status != "failed":
@@ -108,6 +109,9 @@ def customer_add_order(request):
                 return JsonResponse({"status": "success"})
             else:
                 return JsonResponse({"status": "failed", "error": "Failed connect to Stripe."})
+
+
+
 
 def customer_get_latest_order(request):
     access_token = AccessToken.objects.get(token = request.GET.get("access_token"),
